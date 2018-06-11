@@ -178,7 +178,6 @@ callSync(plugin, 'my event', '1', '2');
 
 In webpack v4, the event type signified by the call function name must match the type of the event hook.
 
-
 [npm]: https://img.shields.io/npm/v/webpack-plugin-compat.svg
 [npm-url]: https://npmjs.com/package/webpack-plugin-compat
 [builds-url]: https://travis-ci.org/chuckdumont/webpack-plugin-compat
