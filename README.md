@@ -1,7 +1,6 @@
 [![npm][npm]][npm-url]
 [![builds][builds]][builds-url]
 [![coverage][cover]][cover-url]
-[![licenses][licenses]][licenses-url]
 [![Apache 2.0 License][apache2]][apache2-url]
 
 # Introduction
@@ -57,6 +56,7 @@ const {Tapable, reg} = require('webpack-plugin-conpat');
 const plugin = new Tapable();
 reg(plugin, 'myHook', ['Sync', 'arg1', 'arg2']);
 ```
+
 is equivilent to the following v4 code
 
 ```javascript
@@ -65,6 +65,7 @@ const {SyncHook} = require('tapable');
 const plugin = {hooks: {}};
 plugin.hooks.myHook = new SyncHook(['arg1', 'arg2']);
 ```
+
 Multiple event hooks can be registered with a single `reg` call.
 
 ```javascript
@@ -177,7 +178,5 @@ In webpack v4, the event type signified by the call function name must match the
 [builds]: https://travis-ci.org/chuckdumont/webpack-plugin-compat.svg?branch=master
 [cover-url]: https://coveralls.io/github/chuckdumont/webpack-plugin-compat?branch=master
 [cover]: https://coveralls.io/repos/github/chuckdumont/webpack-plugin-compat/badge.svg?branch=master
-[licenses-url]: https://app.fossa.io/api/projects/git%2Bgithub.com%2Fchuckdumont%2Fwebpack-plugin-compat
-[licenses]: https://app.fossa.io/api/projects/git%2Bgithub.com%2Fchuckdumont%2Fwebpack-plugin-compat.svg?type=shield
 [apache2]: https://img.shields.io/badge/license-Apache%202-blue.svg
 [apache2-url]: https://www.apache.org/licenses/LICENSE-2.0.txt
