@@ -40,7 +40,7 @@ if plugin.hooks contains a HookMap named `evaluateTypeof`.  If the plugin does n
 plugin.hooks.tap('evaluateTypeofRequire', function() {/*...*/});
 ```
 
-# Special case names
+# Special case event names
 
 For compatibility with pre-v4 behavior, this plugin maps the following event names when using webpack v4 and up.
 
