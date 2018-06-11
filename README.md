@@ -79,6 +79,7 @@ reg(plugin, {
 });
 ```
 
+
 The `reg` function is a noop in pre-v4 webpack.
 
 Supported hook types are:
