@@ -1,7 +1,6 @@
 [![npm][npm]][npm-url]
 [![builds][builds]][builds-url]
 [![coverage][cover]][cover-url]
-[![licenses][licenses]][licenses-url]
 [![Apache 2.0 License][apache2]][apache2-url]
 
 # Introduction
@@ -22,23 +21,26 @@ For example, `my-event-name` will be mapped to `myEventName`.
 
 Webpack v4 introduced the concept of [HookMaps](https://github.com/webpack/tapable#hookmap).  This plugin support HookMaps using space delimited tokens in the event name.  The plugin will try to map one or more tokens from the event name to a HookMap name, and if a match is found, then that HookMap will be used.
 
+<!-- eslint-disable no-undef -->
 ```javascript
-tap(plugin, 'evaluate typeof require', function() {...});
+tap(plugin, 'evaluate typeof require', function() {/*...*/});
 ```
 
 is the same as using the v4 plugin APIs
 
+<!-- eslint-disable no-undef -->
 ```javascript
-plugin.hooks.for('evaluateTypeof').tap('require', function() {...});
+plugin.hooks.for('evaluateTypeof').tap('require', function() {/*...*/});
 ```
 
 if plugin.hooks contains a HookMap named `evaluateTypeof`.  If the plugin does not contain a HookMap named `evaluateTypeof`, then the result will be the same as invoking
 
+<!-- eslint-disable no-undef -->
 ```javascript
-plugin.hooks.tap('evaluateTypeofRequire', function() {...});
+plugin.hooks.tap('evaluateTypeofRequire', function() {/*...*/});
 ```
 
-# Special case names
+# Special case event names
 
 For compatibility with pre-v4 behavior, this plugin maps the following event names when using webpack v4 and up.
 
@@ -57,6 +59,7 @@ const {Tapable, reg} = require('webpack-plugin-conpat');
 const plugin = new Tapable();
 reg(plugin, 'myHook', ['Sync', 'arg1', 'arg2']);
 ```
+
 is equivilent to the following v4 code
 
 ```javascript
@@ -65,8 +68,10 @@ const {SyncHook} = require('tapable');
 const plugin = {hooks: {}};
 plugin.hooks.myHook = new SyncHook(['arg1', 'arg2']);
 ```
+
 Multiple event hooks can be registered with a single `reg` call.
 
+<!-- eslint-disable no-undef -->
 ```javascript
 reg(plugin, {
 	myHook: ['Sync', 'arg1', 'arg2'],
@@ -94,7 +99,7 @@ The `tap` function adds a consumer to an event.
 const {Tapable, reg, tap} = require('webpack-plugin-conpat').for('myPlugin');
 const plugin = new Tapable();
 reg(plugin, 'my event', ['Sync', 'arg1', 'arg2']);
-tap(plugin, 'my event', (arg1 arg2) => {
+tap(plugin, 'my event', (arg1, arg2) => {
 	console.log(arg1 + arg2);
 });
 ```
@@ -106,7 +111,7 @@ This is equivilent to the following in webpack v4
 const {SyncHook} = require('tapable');
 const plugin = {hooks: {}};
 plugin.hooks.myEvent = new SyncHook(['arg1', 'arg2']);
-plugin.hooks.myEvent.tap('myPlugin', => (arg1, arg2) {
+plugin.hooks.myEvent.tap('myPlugin', (arg1, arg2) => {
 	console.log(arg1 + arg2);
 });
 ```
@@ -117,32 +122,35 @@ and the following in webpack v3
 // Webpack v3
 const {Tapable} = require('tapable');
 const plugin = new Tapable();
-plugin.plugin('my event', => (arg1, arg2) {
+plugin.plugin('my event', (arg1, arg2) => {
 	console.log(arg1 + arg2);
 });
 ```
 
 You may optionally specify a context for the callback, and an options object (ignored in V3).
 
+<!-- eslint-disable no-undef -->
 ```javascript
 tap(plugin, 'my event', callback, this, {stage:100});
 ```
 
 And you can tap multiple events for the same plugin object with a single call
 
+<!-- eslint-disable no-undef -->
 ```javascript
 tap(plugin, {
-	'my event': () => {...},
-	'my other event': () => {...}
+	'my event': () => {/*...*/},
+	'my other event': () => {/*...*/}
 }, this);
 ```
 
 Using array notation instead of object notation, you may specify multiple events names for the same event callback
 
+<!-- eslint-disable no-undef -->
 ```javascript
 tap(compiler, [
-	[['run', 'watch-run'], () => {...}],
-	['compilation', () => {...}]
+	[['run', 'watch-run'], () => {/*...*/}],
+	['compilation', () => {/*...*/}]
 ], context);
 ```
 
@@ -162,7 +170,7 @@ Event-type specific call functions (e.g. `callSync`, etc.) to invokde event call
 const {Tapable, reg, tap, callSync} = require('webpack-plugin-conpat').for('myPlugin');
 const plugin = new Tapable();
 reg(plugin, 'my event', ['Sync', 'arg1', 'arg2']);
-tap(plugin, 'my event', (arg1 arg2) => {
+tap(plugin, 'my event', (arg1, arg2) => {
 	console.log(arg1 + arg2);
 });
 callSync(plugin, 'my event', '1', '2');
@@ -170,14 +178,11 @@ callSync(plugin, 'my event', '1', '2');
 
 In webpack v4, the event type signified by the call function name must match the type of the event hook.
 
-
 [npm]: https://img.shields.io/npm/v/webpack-plugin-compat.svg
 [npm-url]: https://npmjs.com/package/webpack-plugin-compat
 [builds-url]: https://travis-ci.org/chuckdumont/webpack-plugin-compat
 [builds]: https://travis-ci.org/chuckdumont/webpack-plugin-compat.svg?branch=master
 [cover-url]: https://coveralls.io/github/chuckdumont/webpack-plugin-compat?branch=master
 [cover]: https://coveralls.io/repos/github/chuckdumont/webpack-plugin-compat/badge.svg?branch=master
-[licenses-url]: https://app.fossa.io/api/projects/git%2Bgithub.com%2Fchuckdumont%2Fwebpack-plugin-compat
-[licenses]: https://app.fossa.io/api/projects/git%2Bgithub.com%2Fchuckdumont%2Fwebpack-plugin-compat.svg?type=shield
 [apache2]: https://img.shields.io/badge/license-Apache%202-blue.svg
 [apache2-url]: https://www.apache.org/licenses/LICENSE-2.0.txt
