@@ -1,6 +1,6 @@
 {
   "name": "webpack-plugin-compat",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Compatibility layer for webpack V3/V4 plugin APIs",
   "main": "index.js",
   "directories": {
@@ -40,7 +40,5 @@
     "type": "git",
     "url": "git+https://github.com/chuckdumont/webpack-plugin-compat.git"
   },
-  "dependencies": {
-    "npm": "^6.1.0"
-  }
+  "dependencies": {}
 }
