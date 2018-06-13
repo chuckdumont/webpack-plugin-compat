@@ -39,8 +39,5 @@
 	"repository": {
     "type": "git",
     "url": "git+https://github.com/chuckdumont/webpack-plugin-compat.git"
-  },
-  "dependencies": {
-    "npm": "^6.1.0"
   }
 }
