@@ -93,7 +93,7 @@ Supported hook types are:
 
 ## tap
 
-The `tap` function adds a consumer to an event.
+The `tap` function adds a consumer to an event.  Note: the tap function is only available when a plugin name is provided using the `for` method.
 
 ```javascript
 const {Tapable, reg, tap} = require('webpack-plugin-conpat').for('myPlugin');
