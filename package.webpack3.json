@@ -36,6 +36,10 @@
   ],
   "author": "Chuck Dumont <chuckd@pnp-hcl.com>",
   "license": "Apache-2.0",
+	"repository": {
+    "type": "git",
+    "url": "git+https://github.com/chuckdumont/webpack-plugin-compat.git"
+  },
   "dependencies": {
     "npm": "^6.1.0"
   }
