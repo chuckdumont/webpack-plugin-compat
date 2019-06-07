@@ -1,6 +1,6 @@
 {
   "name": "webpack-plugin-compat",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Compatibility layer for webpack V3/V4 plugin APIs",
   "main": "index.js",
   "directories": {
