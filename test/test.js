@@ -1,20 +1,21 @@
 const should = require("should");
 const tapable = require("tapable");
 const {Tapable, reg, tap, callSync, callSyncBail, callSyncWaterfall, callAsyncParallel, callAsyncParallelBail, callAsyncSeries, callAsyncSeriesWaterfall} = require("../index").for("test");
-const version =  parseInt(require("tapable/package.json").version.split(".")[0]) >= 1 ? 'V4' : 'V3';
+const tapableVersionMajor = parseInt(require("tapable/package.json").version.split(".")[0]);
+const version = tapableVersionMajor >= 2 ? 'V5' : tapableVersionMajor >= 1 ? 'V4' : 'V3';
 
 describe("Plugin Compatibility layer tests", function() {
 	it("test Sync", function() {
 		const plugin = new Tapable();
 		const context = {};
 		reg(plugin, {"test Sync" : ["Sync", "arg1", "arg2", "arg3"]});
-		if (version === 'V4') {
-			(plugin.hooks.testSync instanceof tapable.SyncHook).should.be.eql(true);
+		if (version === 'V5' || version === 'V4') {
+			(plugin.hooks.testSync.constructor.name).should.be.eql(tapable.SyncHook.name);
 		}
 		tap(plugin, {"test Sync" : function(arg1, arg2, arg3) {
 			this.result = arg1 + arg2 + arg3;
 		}}, context);
-		if (version === 'V4') {
+		if (version === 'V5' || version === 'V4') {
 			plugin.hooks.testSync.taps.length.should.be.eql(1);
 		} else {
 			plugin._plugins['test Sync'].length.should.be.eql(1);
@@ -25,18 +26,18 @@ describe("Plugin Compatibility layer tests", function() {
 
 	it("test SyncBail", function() {
 		const plugin = new Tapable();
-		if (version === 'V4') {
+		if (version === 'V5' || version === 'V4') {
 			plugin.hooks = {"foo": "bar"};
 		}
 		reg(plugin, "test SyncBail", ["SyncBail", "arg1", "arg2", "arg3"]);
-		if (version === 'V4') {
+		if (version === 'V5' || version === 'V4') {
 			plugin.hooks.foo.should.be.eql("bar"); // make sure reg() didn't overwrite
-			(plugin.hooks.testSyncBail instanceof tapable.SyncBailHook).should.be.eql(true);
+			(plugin.hooks.testSyncBail.constructor.name).should.be.eql(tapable.SyncBailHook.name);
 		}
 		tap(plugin, "test SyncBail", (arg1, arg2, arg3) => {
 			return arg1 + arg2 + arg3;
 		});
-		if (version === 'V4') {
+		if (version === 'V5' || version === 'V4') {
 			plugin.hooks.testSyncBail.taps.length.should.be.eql(1);
 		} else {
 			plugin._plugins['test SyncBail'].length.should.be.eql(1);
@@ -48,13 +49,13 @@ describe("Plugin Compatibility layer tests", function() {
 		debugger; //eslint-disable-line
 		const plugin = new Tapable();
 		reg(plugin, {"test SyncWaterfall" : ["SyncWaterfall", "arg1", "arg2", "arg3"]});
-		if (version === 'V4') {
-			(plugin.hooks.testSyncWaterfall instanceof tapable.SyncWaterfallHook).should.be.eql(true);
+		if (version === 'V5' || version === 'V4') {
+			(plugin.hooks.testSyncWaterfall.constructor.name).should.be.eql(tapable.SyncWaterfallHook.name);
 		}
 		tap(plugin, [[["test SyncWaterfall"], (arg1, arg2, arg3) => {
 			return arg1 + arg2 + arg3;
 		}]]);
-		if (version === 'V4') {
+		if (version === 'V5' || version === 'V4') {
 			plugin.hooks.testSyncWaterfall.taps.length.should.be.eql(1);
 		} else {
 			plugin._plugins['test SyncWaterfall'].length.should.be.eql(1);
@@ -65,13 +66,13 @@ describe("Plugin Compatibility layer tests", function() {
 	it("test AsyncParallel", function(done) {
 		const plugin = new Tapable();
 		reg(plugin, {"test AsyncParallel" : ["AsyncParallel", "arg1", "arg2", "arg3", "callback"]});
-		if (version === 'V4') {
-			(plugin.hooks.testAsyncParallel instanceof tapable.AsyncParallelHook).should.be.eql(true);
+		if (version === 'V5' || version === 'V4') {
+			(plugin.hooks.testAsyncParallel.constructor.name).should.be.eql(tapable.AsyncParallelHook.name);
 		}
 		tap(plugin, "test AsyncParallel", (arg1, arg2, arg3, callback) => {
 			callback(arg1 + arg2 + arg3);
 		});
-		if (version === 'V4') {
+		if (version === 'V5' || version === 'V4') {
 			plugin.hooks.testAsyncParallel.taps.length.should.be.eql(1);
 		} else {
 			plugin._plugins['test AsyncParallel'].length.should.be.eql(1);
@@ -85,13 +86,13 @@ describe("Plugin Compatibility layer tests", function() {
 	it("test AsyncParallelBail", function(done) {
 		const plugin = new Tapable();
 		reg(plugin, {"test AsyncParallelBail" : ["AsyncParallelBail", "arg1", "arg2", "arg3", "callback"]});
-		if (version === 'V4') {
-			(plugin.hooks.testAsyncParallelBail instanceof tapable.AsyncParallelBailHook).should.be.eql(true);
+		if (version === 'V5' || version === 'V4') {
+			(plugin.hooks.testAsyncParallelBail.constructor.name).should.be.eql(tapable.AsyncParallelBailHook.name);
 		}
 		tap(plugin, "test AsyncParallelBail", (arg1, arg2, arg3, callback) => {
 			callback(arg1 + arg2 + arg3);
 		});
-		if (version === 'V4') {
+		if (version === 'V5' || version === 'V4') {
 			plugin.hooks.testAsyncParallelBail.taps.length.should.be.eql(1);
 		} else {
 			plugin._plugins['test AsyncParallelBail'].length.should.be.eql(1);
@@ -105,13 +106,13 @@ describe("Plugin Compatibility layer tests", function() {
 	it("test AsyncSeries", function(done) {
 		const plugin = new Tapable();
 		reg(plugin, {"test AsyncSeries" : ["AsyncSeries", "arg1", "arg2", "arg3", "callback"]});
-		if (version === 'V4') {
-			(plugin.hooks.testAsyncSeries instanceof tapable.AsyncSeriesHook).should.be.eql(true);
+		if (version === 'V5' || version === 'V4') {
+			(plugin.hooks.testAsyncSeries.constructor.name).should.be.eql(tapable.AsyncSeriesHook.name);
 		}
 		tap(plugin, "test AsyncSeries", (arg1, arg2, arg3, callback) => {
 			callback(arg1 + arg2 + arg3);
 		});
-		if (version === 'V4') {
+		if (version === 'V5' || version === 'V4') {
 			plugin.hooks.testAsyncSeries.taps.length.should.be.eql(1);
 		} else {
 			plugin._plugins['test AsyncSeries'].length.should.be.eql(1);
@@ -125,13 +126,13 @@ describe("Plugin Compatibility layer tests", function() {
 	it("test AsyncSeriesWaterfall", function(done) {
 		const plugin = new Tapable();
 		reg(plugin, {"test AsyncSeriesWaterfall" : ["AsyncSeriesWaterfall", "init", "callback"]});
-		if (version === 'V4') {
-			(plugin.hooks.testAsyncSeriesWaterfall instanceof tapable.AsyncSeriesWaterfallHook).should.be.eql(true);
+		if (version === 'V5' || version === 'V4') {
+			(plugin.hooks.testAsyncSeriesWaterfall.constructor.name).should.be.eql(tapable.AsyncSeriesWaterfallHook.name);
 		}
 		tap(plugin, "test AsyncSeriesWaterfall", (init, callback) => {
 			callback(init.reduce((accumulator, value) => accumulator+value));
 		});
-		if (version === 'V4') {
+		if (version === 'V5' || version === 'V4') {
 			plugin.hooks.testAsyncSeriesWaterfall.taps.length.should.be.eql(1);
 		} else {
 			plugin._plugins['test AsyncSeriesWaterfall'].length.should.be.eql(1);
@@ -142,7 +143,7 @@ describe("Plugin Compatibility layer tests", function() {
 		});
 	});
 
-	if (version === 'V4') {
+	if (version === 'V5' || version === 'V4') {
 		it("test HookMap handling (V4 only)", function(done) {
 			const plugin = new Tapable();
 			const keyedHook = new tapable.HookMap(() => new tapable.SyncBailHook(["arg1", "arg2", "arg3"]));
@@ -159,9 +160,14 @@ describe("Plugin Compatibility layer tests", function() {
 			const plugin = new Tapable();
 			const parserHook = new tapable.HookMap(() => new tapable.SyncBailHook(["arg1", "arg2", "arg3"]));
 			plugin.hooks = {parser:parserHook};
-			parserHook.tap("javascript/auto", "test", (arg1, arg2, arg3) => {
+			const parserHookFn = (arg1, arg2, arg3) => {
 				return arg1 + arg2 + arg3;
-			});
+			};
+			if (version === 'V5') {
+				parserHook.for("javascript/auto").tap("test", parserHookFn);
+			} else {
+				parserHook.tap("javascript/auto", "test", parserHookFn);
+			}
 			callSyncBail(plugin, "parser" , "1", "2", "3").should.be.eql("123");
 			done();
 		});

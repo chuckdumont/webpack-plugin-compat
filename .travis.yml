@@ -4,11 +4,13 @@ node_js:
   - '6'
 
 env:
+  - WEBPACK_VERSION=V5
   - WEBPACK_VERSION=V4
   - WEBPACK_VERSION=V3
 
 before_install:
-  - if [ "$WEBPACK_VERSION" = "V3" ]; then  rm -f package-lock.json; sed "s/\"tapable\":\s*\"1\.0\.0\"/\"tapable\":\"0.2.7\"/" package.json >package.webpack3.json; cp -f ./package.webpack3.json ./package.json; fi
+  - if [ "$WEBPACK_VERSION" = "V4" ]; then  rm -f package-lock.json; sed "s/\"tapable\":\s*\"2\.0\.0\"/\"tapable\":\"1.0.0\"/" package.json >package.webpack4.json; cp -f ./package.webpack4.json ./package.json; fi
+  - if [ "$WEBPACK_VERSION" = "V3" ]; then  rm -f package-lock.json; sed "s/\"tapable\":\s*\"2\.0\.0\"/\"tapable\":\"0.2.7\"/" package.json >package.webpack3.json; cp -f ./package.webpack3.json ./package.json; fi
 
 cache:
   directories:
